@@ -1,0 +1,38 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+import datetime
+
+
+N = 500
+
+for i in range(N):
+    name = "Test: " + str(i)
+    driver = webdriver.Chrome()
+    driver.get("https://consigliere-regional.api.smartthings.com/sa-login")
+    time.sleep(2)
+
+    email = driver.find_element_by_id("username")
+    email.clear()
+    email.send_keys("ethan.fry@smartthings.com")
+
+
+
+    password = driver.find_element_by_id("password")
+    password.clear()
+    password.send_keys("nope")
+    password.send_keys(Keys.RETURN)
+
+
+    time.sleep(1)
+
+    driver.get("https://graph-na04-useast2.api.smartthings.com/device/edit/2ecf7218-f0b1-400d-a3d4-e15ae311bc92")
+    deviceName = driver.find_element_by_name("name")
+    deviceName.clear()
+
+    now = datetime.datetime.now()
+    deviceName.send_keys(name,"    ",now.month,"/",now.day,"/",now.year,"  ",now.hour,":",now.minute,":",now.second)
+
+    update = driver.find_element_by_name("_action_update")
+    update.click()
+    driver.close()
